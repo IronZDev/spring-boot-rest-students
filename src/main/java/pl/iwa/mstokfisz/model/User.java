@@ -6,14 +6,11 @@ import javax.persistence.*;
 
 @Entity
 public class User {
-
     @Id
-    @GeneratedValue(strategy= GenerationType.AUTO)
+    @GeneratedValue
+
     private long id;
-    @Column
     private String username;
-    @Column
-    @JsonIgnore
     private String password;
 
     public long getId() {

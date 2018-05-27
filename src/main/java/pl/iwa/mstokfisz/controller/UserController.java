@@ -1,20 +1,29 @@
 package pl.iwa.mstokfisz.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.web.bind.annotation.*;
+import pl.iwa.mstokfisz.AlreadyExistsException;
 import pl.iwa.mstokfisz.model.User;
+import pl.iwa.mstokfisz.model.request.LoginUserRequest;
+import pl.iwa.mstokfisz.repository.UserRepository;
 import pl.iwa.mstokfisz.service.UserService;
 
+import java.net.URLEncoder;
 import java.util.List;
 
+@CrossOrigin(origins = "http://localhost:4200", maxAge = 3600)
 @RestController
 public class UserController {
 
-    @Autowired
     private UserService userService;
+    private UserRepository userRepository;
+
+    @Autowired
+    public UserController(UserService userService, UserRepository userRepository) {
+        this.userService = userService;
+        this.userRepository = userRepository;
+    }
 
     @RequestMapping(value="/user", method = RequestMethod.GET)
     public List<User> listUser(){
@@ -26,4 +35,8 @@ public class UserController {
         return userService.findById(id);
     }
 
+    @RequestMapping(value="/signup", method = RequestMethod.POST)
+    public User saveUser(@RequestBody User user){
+        return userService.save(user);
+    }
 }
