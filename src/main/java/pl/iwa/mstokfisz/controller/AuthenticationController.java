@@ -10,7 +10,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import pl.iwa.mstokfisz.config.JwtTokenUtil;
 import pl.iwa.mstokfisz.model.AuthToken;
-import pl.iwa.mstokfisz.model.User;
+import pl.iwa.mstokfisz.model.Usr;
 import pl.iwa.mstokfisz.model.request.LoginUserRequest;
 import pl.iwa.mstokfisz.service.UserService;
 
@@ -38,7 +38,7 @@ public class AuthenticationController {
                 )
         );
         SecurityContextHolder.getContext().setAuthentication(authentication);
-        final User user = userService.findOne(loginUserRequest.getUsername());
+        final Usr user = userService.findOne(loginUserRequest.getUsername());
         final String token = jwtTokenUtil.generateToken(user);
         return ResponseEntity.ok(new AuthToken(token));
     }

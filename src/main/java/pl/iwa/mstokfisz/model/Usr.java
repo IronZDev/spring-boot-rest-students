@@ -1,17 +1,19 @@
 package pl.iwa.mstokfisz.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
 
 @Entity
-public class User {
+public class Usr {
     @Id
     @GeneratedValue
 
     private long id;
     private String username;
     @JsonIgnore
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     private String password;
 
     public long getId() {

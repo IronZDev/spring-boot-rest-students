@@ -6,7 +6,7 @@ import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
-import pl.iwa.mstokfisz.model.User;
+import pl.iwa.mstokfisz.model.Usr;
 
 import java.io.Serializable;
 import java.util.Arrays;
@@ -44,7 +44,7 @@ public class JwtTokenUtil implements Serializable {
         return expiration.before(new Date());
     }
 
-    public String generateToken(User user) {
+    public String generateToken(Usr user) {
         return doGenerateToken(user.getUsername());
     }
 

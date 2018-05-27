@@ -1,15 +1,16 @@
 package pl.iwa.mstokfisz.service;
 
-import pl.iwa.mstokfisz.model.User;
+import pl.iwa.mstokfisz.model.Usr;
+import pl.iwa.mstokfisz.model.request.LoginUserRequest;
 
 import java.util.List;
 
 public interface UserService {
 
-    User save(User user);
-    List<User> findAll();
-    void delete(User user);
-    User findOne(String username);
+    Usr save(LoginUserRequest newUser);
+    List<Usr> findAll();
+    void delete(Usr user);
+    Usr findOne(String username);
 
-    User findById(Long id);
+    Usr findById(Long id);
 }

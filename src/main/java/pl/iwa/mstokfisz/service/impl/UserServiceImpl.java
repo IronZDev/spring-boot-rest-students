@@ -9,11 +9,11 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import pl.iwa.mstokfisz.AlreadyExistsException;
 import pl.iwa.mstokfisz.NotFoundException;
-import pl.iwa.mstokfisz.model.User;
+import pl.iwa.mstokfisz.model.Usr;
+import pl.iwa.mstokfisz.model.request.LoginUserRequest;
 import pl.iwa.mstokfisz.repository.UserRepository;
 import pl.iwa.mstokfisz.service.UserService;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -28,7 +28,7 @@ public class UserServiceImpl implements UserDetailsService, UserService {
 	private BCryptPasswordEncoder bcryptEncoder;
 
 	public UserDetails loadUserByUsername(String userId) throws UsernameNotFoundException {
-		for(User user : findAll()) {
+		for(Usr user : findAll()) {
 			if(user.getUsername().equals(userId)) {
 				return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(), getAuthority());
 			}
@@ -40,20 +40,18 @@ public class UserServiceImpl implements UserDetailsService, UserService {
 		return Arrays.asList(new SimpleGrantedAuthority("ROLE_ADMIN"));
 	}
 
-	public List<User> findAll() {
-		List<User> list = new ArrayList<>();
-		userRepository.findAll().iterator().forEachRemaining(list::add);
-		return list;
+	public List<Usr> findAll() {
+		return userRepository.findAll();
 	}
 
 	@Override
-	public void delete(User user) {
+	public void delete(Usr user) {
 		userRepository.delete(user);
 	}
 
 	@Override
-	public User findOne(String username) {
-		for(User usr : findAll()) {
+	public Usr findOne(String username) {
+		for(Usr usr : findAll()) {
 			if(usr.getUsername().equals(username)) {
 				return usr;
 			}
@@ -62,19 +60,19 @@ public class UserServiceImpl implements UserDetailsService, UserService {
 	}
 
 	@Override
-	public User findById(Long id) {
+	public Usr findById(Long id) {
 		return userRepository.getOne(id);
 	}
 
 	@Override
-    public User save(User newUser) {
-		for(User usr : findAll()) {
+    public Usr save(LoginUserRequest newUser) {
+		for(Usr usr : findAll()) {
 			if(usr.getUsername().equals(newUser.getUsername())) {
 				System.out.println("Already exists!");
 				throw new AlreadyExistsException("Such user already exists!");
 			}
 		}
-		User user = new User();
+		Usr user = new Usr();
 		user.setUsername(newUser.getUsername());
 		user.setPassword(bcryptEncoder.encode(newUser.getPassword()));
 		return userRepository.save(user);
